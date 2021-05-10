@@ -6,14 +6,30 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h2>Employee Data</h2>
+	<h2>Employee Data from Boomi API</h2>
 	<div class="div">
+		<a  href="#" th:href="@{/}" style="text-decoration: none"class="link">Home</a>
 		<a  href="#" th:href="@{/employee}" style="text-decoration: none"class="link">Get Employee Location</a>
 	</div>
     
     <div class="div1">
      <h2>Requested Employee Information</h2>
-		<span th:text="${employeeResponse}"></span>
+     <table id="table" style="width:100%">
+			<tr>
+  				<th>Employee No.</th>
+    			<th>Employee Name</th>
+    			<th>Gender</th> 
+    			<th>Birth Date</th> 
+    			<th>Hire Date</th> 
+    		</tr>	
+			<tr th:each="emp,iterStat : ${employeeResponse}" >
+				<td><span th:text="${emp.getEmployeeNo()}"></span></td>
+				<td><span th:text="${emp.getEmployeeName()}"></span></td>
+				<td><span th:text="${emp.getGender()}"></span></td>
+				<td><span th:text="${emp.getBirthDate()}"></span></td>
+				<td><span th:text="${emp.getHireDate()}"></span></td>
+			</tr>
+		</table>
 	</div> 
 </body>
 </html>

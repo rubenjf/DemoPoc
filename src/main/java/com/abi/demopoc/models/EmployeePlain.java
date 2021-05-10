@@ -6,8 +6,8 @@ public class EmployeePlain {
 	private String response;
 
 	@Bean
-	public Weather weather() {
-		return new Weather();
+	public EmployeePlain employeePlain() {
+		return new EmployeePlain();
 	}
 
 	public EmployeePlain() {

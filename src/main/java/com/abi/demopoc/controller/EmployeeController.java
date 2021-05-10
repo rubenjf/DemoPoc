@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +17,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.abi.demopoc.models.Employee;
-import com.abi.demopoc.models.EmployeePlain;
 import com.abi.demopoc.models.EmployeeUrl;
 import com.abi.demopoc.models.FormEmployeeAttribute;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,28 +36,25 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value = "/employee", method=RequestMethod.POST)
-	public String getEmployeeLocation(Model model, @ModelAttribute FormEmployeeAttribute employee) 
+	public String getEmployeeLocation(Model model, @ModelAttribute FormEmployeeAttribute formEmployee) 
 		throws IOException{
 		UriComponents uriComponents = UriComponentsBuilder
 				.newInstance()
 				.scheme("http")
 				.host(employeeData.getUrl())
-			    .path("")
-			    .queryParam("ParamTest1",employee.getFirstName())
-			    .queryParam("ParamTest2",employee.getLastName())
+			    .path("/ws/rest/pocV1/request")
+			    .queryParam("ParamTest1",formEmployee.getFirstName())
+			    .queryParam("ParamTest2",formEmployee.getLastName())
 			    .build();
 		
 		String uri = uriComponents.toUriString();
 		
 		ResponseEntity<String> resp= restTemp.exchange(uri, HttpMethod.GET, null, String.class);
 		
-//		Employee emp = new EmployeePlain();
-//		emp.processResponse(resp.getBody());
-//		
-//		ObjectMapper mapper = new ObjectMapper();
-//		Employee employ = mapper.readValue(resp.getBody(), Employee.class);
-//		model.addAttribute("weatherData", employ);
-		model.addAttribute("employeeResponse",resp.getBody());	
+		ObjectMapper mapper = new ObjectMapper();
+		Employee employeeResponse = mapper.readValue(resp.getBody(), Employee.class);
+		
+		model.addAttribute("employeeResponse",employeeResponse);	
 		return "employeeDetails";
 	}
 
