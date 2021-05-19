@@ -42,7 +42,7 @@ public class EmployeeController {
 				.newInstance()
 				.scheme("http")
 				.host(employeeData.getUrl())
-			    .path("/ws/rest/pocV1/request")
+			    .path("/ws/rest/pocV1/request/getEmployee")
 			    .queryParam("ParamTest1",formEmployee.getFirstName())
 			    .queryParam("ParamTest2",formEmployee.getLastName())
 			    .build();
@@ -56,6 +56,31 @@ public class EmployeeController {
 		
 		model.addAttribute("employeeResponse",employeeResponse);	
 		return "employeeDetails";
+	}
+	
+	@RequestMapping(value = "/addEmployee",method=RequestMethod.GET )
+	public ModelAndView AddEmployeeForm() {
+		
+		return new ModelAndView("addEmployeeForm", "employee", new FormEmployeeAttribute());
+	}
+	
+	@RequestMapping(value = "/addEmployee", method=RequestMethod.POST)
+	public String addEmployee(Model model, @ModelAttribute FormEmployeeAttribute formEmployee)
+		throws IOException{
+		UriComponents uriComponents = UriComponentsBuilder
+				.newInstance()
+				.scheme("http")
+				.host(employeeData.getUrl())
+			    .path("/ws/rest/pocV1/request/insertEmployee")
+			    .queryParam("ParamTest1",formEmployee.getFirstName())
+			    .queryParam("ParamTest2",formEmployee.getLastName())
+			    .build();
+		
+		String uri = uriComponents.toUriString();
+		
+		ResponseEntity<String> resp= restTemp.exchange(uri, HttpMethod.POST, null, String.class);
+		model.addAttribute("simpleEmployeeResponse",resp.getBody());	
+		return "simpleEmployeeDetails";
 	}
 
 }
