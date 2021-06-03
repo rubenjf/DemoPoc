@@ -30,32 +30,24 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeUrl employeeData;
 	@RequestMapping(value = "/employee",method=RequestMethod.GET )
-	public ModelAndView EmployeeForm() {
-		
-		return new ModelAndView("employeeFormData", "employee", new FormEmployeeAttribute());
-	}
-	
-	@RequestMapping(value = "/employee", method=RequestMethod.POST)
-	public String getEmployeeLocation(Model model, @ModelAttribute FormEmployeeAttribute formEmployee) 
-		throws IOException{
+	public String getEmployees(Model model) throws IOException {
 		UriComponents uriComponents = UriComponentsBuilder
 				.newInstance()
 				.scheme("http")
 				.host(employeeData.getUrl())
 			    .path("/ws/rest/pocV1/request/getEmployee")
-			    .queryParam("ParamTest1",formEmployee.getFirstName())
-			    .queryParam("ParamTest2",formEmployee.getLastName())
 			    .build();
-		
 		String uri = uriComponents.toUriString();
 		
 		ResponseEntity<String> resp= restTemp.exchange(uri, HttpMethod.GET, null, String.class);
 		
 		ObjectMapper mapper = new ObjectMapper();
-		Employee employeeResponse = mapper.readValue(resp.getBody(), Employee.class);
+		Employee[] employeeResponse = mapper.readValue(resp.getBody(), Employee[].class);
+		System.out.println(employeeResponse);
 		
 		model.addAttribute("employeeResponse",employeeResponse);	
 		return "employeeDetails";
+		
 	}
 	
 	@RequestMapping(value = "/addEmployee",method=RequestMethod.GET )
