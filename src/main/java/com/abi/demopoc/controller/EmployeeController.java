@@ -43,7 +43,6 @@ public class EmployeeController {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Employee[] employeeResponse = mapper.readValue(resp.getBody(), Employee[].class);
-		System.out.println(employeeResponse);
 		
 		model.addAttribute("employeeResponse",employeeResponse);	
 		return "employeeDetails";
@@ -71,7 +70,9 @@ public class EmployeeController {
 		String uri = uriComponents.toUriString();
 		
 		ResponseEntity<String> resp= restTemp.exchange(uri, HttpMethod.POST, null, String.class);
-		model.addAttribute("simpleEmployeeResponse",resp.getBody());	
+		String responseText = resp.getBody();
+		String[] responseParts = responseText.split("Email Address:");
+		model.addAttribute("simpleEmployeeResponse",responseParts[0]);	
 		return "simpleEmployeeDetails";
 	}
 

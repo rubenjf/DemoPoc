@@ -3,9 +3,6 @@ package com.abi.demopoc.models;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
-
-import org.springframework.context.annotation.Bean;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
 "First_Name",
-"Last_Name",
+"Last_Name"
 })
 @Generated("jsonschema2pojo")
 public class Employee {
@@ -28,20 +25,6 @@ private String lastName;
 @JsonIgnore
 private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-@Bean
-public Employee employee() {
-	return new Employee();
-}
-
-public Employee() {
-	super();
-	// TODO Auto-generated constructor stub
-}
-
-public Employee(Employee employee) {
-	// TODO Auto-generated constructor stub
-}
-
 @JsonProperty("First_Name")
 public String getFirstName() {
 return firstName;
@@ -52,6 +35,11 @@ public void setFirstName(String firstName) {
 this.firstName = firstName;
 }
 
+public Employee withFirstName(String firstName) {
+this.firstName = firstName;
+return this;
+}
+
 @JsonProperty("Last_Name")
 public String getLastName() {
 return lastName;
@@ -59,9 +47,13 @@ return lastName;
 
 @JsonProperty("Last_Name")
 public void setLastName(String lastName) {
-this.firstName = lastName;
+this.lastName = lastName;
 }
 
+public Employee withLastName(String lastName) {
+this.lastName = lastName;
+return this;
+}
 
 @JsonAnyGetter
 public Map<String, Object> getAdditionalProperties() {
@@ -71,6 +63,11 @@ return this.additionalProperties;
 @JsonAnySetter
 public void setAdditionalProperty(String name, Object value) {
 this.additionalProperties.put(name, value);
+}
+
+public Employee withAdditionalProperty(String name, Object value) {
+this.additionalProperties.put(name, value);
+return this;
 }
 
 }
