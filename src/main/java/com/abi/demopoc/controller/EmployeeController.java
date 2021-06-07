@@ -65,14 +65,15 @@ public class EmployeeController {
 			    .path("/ws/rest/pocV1/request/insertEmployee")
 			    .queryParam("ParamTest1",formEmployee.getFirstName())
 			    .queryParam("ParamTest2",formEmployee.getLastName())
+			    .queryParam("ParamTest3",formEmployee.getEmailAddress())
 			    .build();
 		
 		String uri = uriComponents.toUriString();
 		
 		ResponseEntity<String> resp= restTemp.exchange(uri, HttpMethod.POST, null, String.class);
-		String responseText = resp.getBody();
-		String[] responseParts = responseText.split("Email Address:");
-		model.addAttribute("simpleEmployeeResponse",responseParts[0]);	
+//		String responseText = resp.getBody();
+//		String[] responseParts = responseText.split("Email Address:");
+		model.addAttribute("simpleEmployeeResponse",resp.getBody());	
 		return "simpleEmployeeDetails";
 	}
 
